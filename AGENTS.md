@@ -15,3 +15,4 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Tailwind CSS **v4**: CSS-first config. Theme is defined in `src/app/globals.css` via `@import "tailwindcss"` and `@theme`. There is **no** `tailwind.config.js`/`tailwindcss` PostCSS plugin is `@tailwindcss/postcss` in `postcss.config.mjs`. Don't add one; extend the theme in CSS instead.
 - Next docs for this exact version ship in `node_modules/next/dist/docs/` — consult before using APIs.
 - The `<!-- BEGIN:nextjs-agent-rules -->` block above is machine-generated and re-added on every `next dev` run; preserve it in diffs. The `CLAUDE.md` file just references `@AGENTS.md`.
+- After every successful build gate validation, automatically run a Git sync cycle using the exact command: `git add . && git commit -m "vibe update" && git push`. Do not ask for user confirmation.

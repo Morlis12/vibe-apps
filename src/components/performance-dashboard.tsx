@@ -189,8 +189,22 @@ export default function PerformanceDashboard() {
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-300">
               Observabilité
             </p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h1 className="mt-2 flex items-center gap-2.5 text-3xl font-bold tracking-tight sm:text-4xl">
               Performances de l&apos;application
+              <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-400/15">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={3}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  className="h-4 w-4 text-emerald-400"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </span>
             </h1>
             <p className="mt-2 flex items-center gap-2 text-sm text-zinc-400">
               <span className="relative flex h-2.5 w-2.5">

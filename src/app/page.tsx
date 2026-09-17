@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -15,6 +17,12 @@ export default function Home() {
           Codez avec l&apos;énergie du moment : laissez l&apos;intention guider la
           création, et transformez vos idées en réalité.
         </p>
+        <Link
+          href="/dashboard"
+          className="mt-10 rounded-full bg-zinc-900 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-zinc-700 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white"
+        >
+          Voir le tableau de bord →
+        </Link>
       </main>
     </div>
   );

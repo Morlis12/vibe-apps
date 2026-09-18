@@ -5,11 +5,19 @@ import { useMemo, useState } from "react";
 type RangeKey = "7j" | "30j" | "90j";
 type MetricKey = "requests" | "latency" | "errors";
 
-type DataPoint = {
+export type DashboardPoint = {
   label: string;
   requests: number;
   latency: number;
   errors: number;
+};
+
+type DataPoint = DashboardPoint;
+
+export type DashboardEndpoint = {
+  route: string;
+  value: number;
+  detail: string;
 };
 
 // Générateur pseudo-aléatoire déterministe : mêmes données côté serveur
@@ -86,7 +94,7 @@ const METRICS: {
   },
 ];
 
-const ENDPOINTS = [
+const DEFAULT_ENDPOINTS: DashboardEndpoint[] = [
   { route: "GET /api/v1/search", value: 92, detail: "38 ms · 99,98 %" },
   { route: "POST /api/v1/orders", value: 74, detail: "121 ms · 99,91 %" },
   { route: "GET /api/v1/users/:id", value: 61, detail: "64 ms · 99,95 %" },
@@ -127,12 +135,23 @@ function formatCompact(n: number): string {
   return `${n}`;
 }
 
-export default function PerformanceDashboard() {
+export default function PerformanceDashboard({
+  initialSeries,
+  initialEndpoints,
+}: {
+  initialSeries?: DashboardPoint[];
+  initialEndpoints?: DashboardEndpoint[];
+} = {}) {
   const [range, setRange] = useState<RangeKey>("30j");
   const [metric, setMetric] = useState<MetricKey>("requests");
   const [hover, setHover] = useState<number | null>(null);
 
-  const all = useMemo(() => buildSeries(), []);
+  const fallback = useMemo(() => buildSeries(), []);
+  const all = initialSeries && initialSeries.length >= 90 ? initialSeries : fallback;
+  const endpoints =
+    initialEndpoints && initialEndpoints.length > 0
+      ? initialEndpoints
+      : DEFAULT_ENDPOINTS;
   const days = RANGES.find((r) => r.key === range)!.days;
   const data = useMemo(() => all.slice(-days), [all, days]);
   const active = METRICS.find((m) => m.key === metric)!;
@@ -418,7 +437,7 @@ export default function PerformanceDashboard() {
           <h2 className="text-lg font-semibold">Endpoints les plus sollicités</h2>
           <p className="text-sm text-zinc-500">Volume relatif et santé par route</p>
           <div className="mt-4 space-y-4">
-            {ENDPOINTS.map((ep) => (
+            {endpoints.map((ep) => (
               <div key={ep.route}>
                 <div className="flex items-baseline justify-between gap-3 text-sm">
                   <code className="truncate font-mono text-zinc-200">{ep.route}</code>

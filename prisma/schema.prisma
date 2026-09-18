@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Trafic quotidien + performances globales (alimente le graphique Trafic & santé)
+model DailyMetric {
+  id         Int      @id @default(autoincrement())
+  date       DateTime @unique
+  label      String
+  requests   Int
+  latencyP95 Int      @map("latency_p95")
+  errors     Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("daily_metrics")
+}
+
+// Endpoints les plus sollicités (panneau bas du dashboard)
+model EndpointStat {
+  id          Int      @id @default(autoincrement())
+  method      String
+  route       String   @unique
+  requests    Int
+  share       Int // % relatif 0-100 pour la barre de progression
+  avgLatency  Int      @map("avg_latency_ms")
+  successRate Float    @map("success_rate")
+  updatedAt   DateTime @updatedAt
+
+  @@map("endpoint_stats")
+}
